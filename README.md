@@ -29,10 +29,48 @@ func main(){
   c.TargetDeviceIDs = []string{"device_id_1", "Some_more_device_ids"}
   b, _ := json.Marshal(request)
 	req := gorequest.New()
-	resp, body, errs := req.Post("http://192.168.1.18:9010/send").
+	resp, body, errs := req.Post("http://localhost:9010/send").
 		Set("Content-Type", "application/json").
 		Send(string(b)).
 		End()
 	fmt.Println("\n", resp, body, errs)
 }
+```
+# The Combined Struct
+Probably the axle of the server, this struct combines the payload structure fields used by GCM and APNS **locally**. The original format supported by the APIs is mapped later on when the Platform is identified.
+```
+// A Local struct to integrate all the supported fields of both APIs before bifurcating the payload based on Platform.
+
+type Combined struct {
+	
+	// GCM fields
+	
+	TargetDeviceIDs       []string    `json:"registration_ids,omitempty"`
+	CollapseKey           string      `json:"collapse_key,omitempty"`
+	Priority              string      `json:"priority,omitempty"`
+	ContentAvailableGcm   bool        `json:"content_available,omitempty"`
+	DelayWhileIdle        bool        `json:"delay_while_idle,omitempty"`
+	TimeToLive            int         `json:"time_to_live,omitempty"`
+	RestrictedPackageName string      `json:"restricted_package_name,omitempty"`
+	DryRun                bool        `json:"dry_run,omitempty"`
+	Payload               PayloadBody `json:"notification,omitempty"` ////  notification
+	Contents              Content     `json:"contents,omitempty"`
+	
+	 // APNS fields
+
+	Alert            interface{} `json:"alert,omitempty"` ////    alert
+	Badge            int         `json:"badge,omitempty"`
+	Sound            string      `json:"sound,omitempty"`
+	ContentAvailable int         `json:"content-available,omitempty"`
+	Category         string      `json:"category,omitempty"`
+	
+	// An array to store the DeviceIDs and their Platforms
+
+	DevicesList []Device `json"deviceslist,omitempty"`
+	
+	// Not a standard field. Included to incorporate AlertDictionary type in Combined type.
+
+	AlertDict AlertDictionary `json:"alertdic,omitempty"`
+}
+
 ```
