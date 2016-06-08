@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/muto_gcm"
 	"github.com/parnurzeal/gorequest"
 )
