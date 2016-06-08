@@ -72,5 +72,11 @@ type Combined struct {
 
 	AlertDict AlertDictionary `json:"alertdic,omitempty"`
 }
-
+```
+ **Captures the common features of GCM and APNS payload**
+```
+type Content struct {
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
+}
 ```
