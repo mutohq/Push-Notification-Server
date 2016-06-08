@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-
 	apns "github.com/anachronistic/apns"
 	"github.com/gin-gonic/gin"
 	"github.com/muto_gcm"
